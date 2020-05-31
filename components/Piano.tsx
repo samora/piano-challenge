@@ -84,7 +84,7 @@ const Piano = () => {
         }
         .last-played-key {
           font-size: 3em;
-          margin: 0.2em 0 0;
+          margin: 0.2em 0;
           color: #222;
           display: block;
         }
@@ -114,6 +114,7 @@ const Piano = () => {
         .white.active {
           border-top: 1px solid #777;
           border-left: 1px solid #999;
+          border-right: 1px solid #999;
           border-bottom: 2px solid #999;
         }
         .black {
