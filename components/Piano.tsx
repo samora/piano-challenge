@@ -31,16 +31,16 @@ const Piano = () => {
   const removeActiveKey = (key: [string, string]) =>
     setActiveKeys(without([key[1]], activeKeys))
 
-  const onMouseDown: (key: [string, string]) => MouseEventHandler = (key) => (
+  const addHighlight: (key: [string, string]) => MouseEventHandler = (key) => (
     e
   ) => {
     e.preventDefault()
     addActiveKey(key)
   }
 
-  const onMouseUp: (key: [string, string]) => MouseEventHandler = (key) => (
-    e
-  ) => {
+  const removeHighlight: (key: [string, string]) => MouseEventHandler = (
+    key
+  ) => (e) => {
     e.preventDefault()
     removeActiveKey(key)
   }
@@ -56,10 +56,10 @@ const Piano = () => {
             <li
               className={classname}
               key={`${key[0]} ${key[1]}`}
-              onMouseUp={onMouseUp(key)}
-              onMouseDown={onMouseDown(key)}
-              onMouseLeave={onMouseUp(key)}
-              onMouseOut={onMouseUp(key)}
+              onMouseUp={removeHighlight(key)}
+              onMouseDown={addHighlight(key)}
+              onMouseLeave={removeHighlight(key)}
+              onMouseOut={removeHighlight(key)}
             ></li>
           )
         })}
