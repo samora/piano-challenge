@@ -1,29 +1,54 @@
+const [WHITE, BLACK] = ['white', 'black']
+
+const keys = [
+  [WHITE, 'c'],
+  [BLACK, 'cs'],
+  [WHITE, 'd'],
+  [BLACK, 'ds'],
+  [WHITE, 'e'],
+  [WHITE, 'f'],
+  [BLACK, 'fs'],
+  [WHITE, 'g'],
+  [BLACK, 'gs'],
+  [WHITE, 'a'],
+  [BLACK, 'as'],
+  [WHITE, 'b'],
+]
+
 const Piano = () => {
   return (
-    <div>
+    <div className="piano-container">
       <ul className="piano">
-        <li className="white c"></li>
-        <li className="black cs"></li>
-        <li className="white d"></li>
-        <li className="black ds"></li>
-        <li className="white e"></li>
-        <li className="white f"></li>
-        <li className="black fs"></li>
-        <li className="white g"></li>
-        <li className="black gs"></li>
-        <li className="white a"></li>
-        <li className="black as"></li>
-        <li className="white b"></li>
+        {keys.map((key) => {
+          const classname = `${key[0]} ${key[1]}`
+          return <li className={classname} key={classname}></li>
+        })}
       </ul>
+
+      <p className="last-played-key">C</p>
 
       <style jsx>{`
         * {
           box-sizing: border-box;
         }
+        .piano-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .last-played-key {
+          font-size: 3em;
+          margin: 0.2em 0 0;
+          color: #222;
+          display: block;
+        }
+        .status {
+          font-size: 0.2em;
+          color: grey;
+        }
         ul {
-          height: 18.875em;
-          width: 34em;
           margin: 0 auto;
+          padding: 0;
           position: relative;
           border: none;
         }
@@ -40,7 +65,7 @@ const Piano = () => {
           z-index: 1;
           border: 1px solid #bbb;
         }
-        .white:active {
+        .white.active {
           border-top: 1px solid #777;
           border-left: 1px solid #999;
           border-bottom: 2px solid #999;
@@ -53,7 +78,7 @@ const Piano = () => {
           border: 1px solid #000;
           background: linear-gradient(45deg, #222 0%, #555 100%);
         }
-        .black:active {
+        .black.active {
           background: linear-gradient(to right, #444 0%, #222 100%);
         }
         .a,
