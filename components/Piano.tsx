@@ -1,3 +1,8 @@
+import { useState, MouseEventHandler } from 'react'
+import uniq from 'ramda/src/uniq'
+import without from 'ramda/src/without'
+import classNames from 'classnames'
+
 const [WHITE, BLACK] = ['white', 'black']
 
 const keys = [
@@ -16,16 +21,57 @@ const keys = [
 ]
 
 const Piano = () => {
+  const [playHistory, setPlayHistory] = useState([])
+  const [activeKeys, setActiveKeys] = useState([])
+
+  const addActiveKey = (key: [string, string]) => {
+    setActiveKeys(uniq([...activeKeys, key[1]]))
+    setPlayHistory([...playHistory, key[1]])
+  }
+  const removeActiveKey = (key: [string, string]) =>
+    setActiveKeys(without([key[1]], activeKeys))
+
+  const onMouseDown: (key: [string, string]) => MouseEventHandler = (key) => (
+    e
+  ) => {
+    e.preventDefault()
+    addActiveKey(key)
+  }
+
+  const onMouseUp: (key: [string, string]) => MouseEventHandler = (key) => (
+    e
+  ) => {
+    e.preventDefault()
+    removeActiveKey(key)
+  }
+
   return (
     <div className="piano-container">
       <ul className="piano">
-        {keys.map((key) => {
-          const classname = `${key[0]} ${key[1]}`
-          return <li className={classname} key={classname}></li>
+        {keys.map((key: [string, string]) => {
+          const classname = classNames(key, {
+            active: activeKeys.includes(key[1]),
+          })
+          return (
+            <li
+              className={classname}
+              key={`${key[0]} ${key[1]}`}
+              onMouseUp={onMouseUp(key)}
+              onMouseDown={onMouseDown(key)}
+              onMouseLeave={onMouseUp(key)}
+              onMouseOut={onMouseUp(key)}
+            ></li>
+          )
         })}
       </ul>
 
-      <p className="last-played-key">C</p>
+      <p className="last-played-key">
+        {activeKeys.length > 0 ? (
+          activeKeys[activeKeys.length - 1].toUpperCase()
+        ) : (
+          <span>&nbsp;</span>
+        )}
+      </p>
 
       <style jsx>{`
         * {
