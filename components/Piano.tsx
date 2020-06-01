@@ -111,9 +111,6 @@ const Piano = () => {
       </div>
 
       <style jsx>{`
-        * {
-          box-sizing: border-box;
-        }
         input {
           margin-right: 1em;
         }
