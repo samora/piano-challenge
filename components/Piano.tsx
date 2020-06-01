@@ -23,6 +23,7 @@ const keys = [
 const Piano = () => {
   const [playHistory, setPlayHistory] = useState([])
   const [activeKeys, setActiveKeys] = useState([])
+  const [inputValue, setInputValue] = useState('')
 
   const addActiveKey = (key: [string, string]) => {
     setActiveKeys(uniq([...activeKeys, key[1]]))
@@ -44,6 +45,13 @@ const Piano = () => {
     e.preventDefault()
     removeActiveKey(key)
   }
+
+  const handleInputValueChange = (event) => {
+    const value: string = event.target.value.toUpperCase()
+    setInputValue(value.replace(/[^cdefgab]/gi, ''))
+  }
+
+  const clearInputValue = () => setInputValue('')
 
   return (
     <div className="piano-container">
@@ -72,6 +80,16 @@ const Piano = () => {
           <span>&nbsp;</span>
         )}
       </p>
+
+      <div>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputValueChange}
+        />
+        <button onClick={clearInputValue}>CLEAR</button>
+        <button>PLAY</button>
+      </div>
 
       <style jsx>{`
         * {
