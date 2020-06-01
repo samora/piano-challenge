@@ -107,7 +107,7 @@ const Piano = () => {
           value={inputValue}
           onChange={handleInputValueChange}
         />
-        <button onClick={() => playAll()}>PLAY</button>
+        <button onClick={playAll}>PLAY</button>
       </div>
 
       <style jsx>{`

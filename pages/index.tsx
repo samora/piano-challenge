@@ -9,10 +9,18 @@ export const Home = (): JSX.Element => (
     </Head>
 
     <main>
-      <Piano />
+      <div className="piano-wrapper">
+        <Piano />
+      </div>
+      <div className="piano-wrapper">
+        <Piano />
+      </div>
     </main>
 
     <style jsx>{`
+      .piano-wrapper {
+        margin: 2em 0;
+      }
       .container {
         min-height: 100vh;
         padding: 0 0.5rem;
