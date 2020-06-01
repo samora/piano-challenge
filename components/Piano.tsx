@@ -3,9 +3,17 @@ import uniq from 'ramda/src/uniq'
 import without from 'ramda/src/without'
 import classNames from 'classnames'
 
+const waitFor = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+const asyncForEach = async (array: any[], callback: Function) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array)
+  }
+}
+
 const [WHITE, BLACK] = ['white', 'black']
 
-const keys = [
+const keys: [string, string][] = [
   [WHITE, 'c'],
   [BLACK, 'cs'],
   [WHITE, 'd'],
@@ -35,14 +43,14 @@ const Piano = () => {
   const addHighlight: (key: [string, string]) => MouseEventHandler = (key) => (
     e
   ) => {
-    e.preventDefault()
+    e && e.preventDefault()
     addActiveKey(key)
   }
 
   const removeHighlight: (key: [string, string]) => MouseEventHandler = (
     key
   ) => (e) => {
-    e.preventDefault()
+    e && e.preventDefault()
     removeActiveKey(key)
   }
 
@@ -51,7 +59,19 @@ const Piano = () => {
     setInputValue(value.replace(/[^cdefgab]/gi, ''))
   }
 
-  const clearInputValue = () => setInputValue('')
+  const play = async (key: [string, string]) => {
+    addHighlight(key)(null)
+    await waitFor(1000)
+    removeHighlight(key)(null)
+  }
+
+  const playAll = async () => {
+    const values = inputValue.split('')
+    await asyncForEach(values, async (value: string) => {
+      const key = keys.find((k) => k[1] === value.toLowerCase())
+      await play(key)
+    })
+  }
 
   return (
     <div className="piano-container">
@@ -87,13 +107,15 @@ const Piano = () => {
           value={inputValue}
           onChange={handleInputValueChange}
         />
-        <button onClick={clearInputValue}>CLEAR</button>
-        <button>PLAY</button>
+        <button onClick={() => playAll()}>PLAY</button>
       </div>
 
       <style jsx>{`
         * {
           box-sizing: border-box;
+        }
+        input {
+          margin-right: 1em;
         }
         .piano-container {
           display: flex;
