@@ -8,3 +8,5 @@ Run:
 ```
 npm i && npm run dev
 ```
+
+TODO: Tests 🙈
